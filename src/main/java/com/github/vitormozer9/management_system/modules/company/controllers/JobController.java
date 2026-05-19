@@ -7,29 +7,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.vitormozer9.management_system.modules.company.entities.CompanyEntity;
-import com.github.vitormozer9.management_system.modules.company.useCases.CreateCompanyUseCase;
+import com.github.vitormozer9.management_system.modules.company.entities.JobEntity;
+import com.github.vitormozer9.management_system.modules.company.useCases.CreateJobUseCase;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/company")
-public class CompanyController {
+@RequestMapping("/job")
+public class JobController {
 
     @Autowired
-    private CreateCompanyUseCase companyUseCase;
+    private CreateJobUseCase jobUseCase;
 
     @PostMapping("/")
-    public ResponseEntity<Object> createCompany(@Valid @RequestBody CompanyEntity companyEntity){
+    public ResponseEntity<Object> createJob(@Valid @RequestBody JobEntity jobEntity){
         try {
-            var result = this.companyUseCase.execute(companyEntity);
+            var result = this.jobUseCase.execute(jobEntity);
             return ResponseEntity.ok().body(result);
-
         } 
         catch (Exception e) 
         {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+        
     }
-    
 }
