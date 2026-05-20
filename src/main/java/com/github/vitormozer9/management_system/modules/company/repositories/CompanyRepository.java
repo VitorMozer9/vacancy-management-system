@@ -8,4 +8,5 @@ import com.github.vitormozer9.management_system.modules.company.entities.Company
 
 public interface CompanyRepository extends JpaRepository<CompanyEntity, UUID>{
     Optional<CompanyEntity> findByUsernameOrEmail(String usernemane, String email);
+    Optional<CompanyEntity> findByUsername(String companyUsername);
 }
