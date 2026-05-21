@@ -13,7 +13,7 @@ import com.github.vitormozer9.management_system.modules.candidate.useCases.Creat
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/candidates")
+@RequestMapping("/candidate")
 public class CandidateController {
 
     @Autowired
