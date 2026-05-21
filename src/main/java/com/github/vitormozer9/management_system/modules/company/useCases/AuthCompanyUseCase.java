@@ -1,5 +1,8 @@
 package com.github.vitormozer9.management_system.modules.company.useCases;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -42,6 +45,7 @@ public class AuthCompanyUseCase {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         var token =JWT.create().withIssuer("javagas")
+            .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
             .withSubject(company.getId().toString())
             .sign(algorithm);
         return token;
