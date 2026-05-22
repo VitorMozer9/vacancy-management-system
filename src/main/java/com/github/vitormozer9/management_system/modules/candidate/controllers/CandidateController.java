@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.vitormozer9.management_system.modules.candidate.CandidateEntity;
-import com.github.vitormozer9.management_system.modules.candidate.dto.ProfileCandidateResponseDTO;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.CreateCandidateUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ProfileCandidateUseCase;
 
@@ -39,6 +39,7 @@ public class CandidateController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasRole('CANDIDATE')")
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
         var idCandidate = request.getAttribute("candidate_id");

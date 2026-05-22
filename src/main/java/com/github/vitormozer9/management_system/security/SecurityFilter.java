@@ -27,10 +27,11 @@ public class SecurityFilter extends OncePerRequestFilter{
                                     HttpServletResponse response, 
                                     FilterChain filterChain)
             throws ServletException, IOException {
-        SecurityContextHolder.getContext().setAuthentication(null);
+        //SecurityContextHolder.getContext().setAuthentication(null);
         String header = request.getHeader("Authorization");
 
-        if (header != null) {
+        if(request.getRequestURI().startsWith("/company")) {
+            if (header != null) {
             var subjectToken = this.jwTprovider.validateToken(header);
 
             if(subjectToken.isEmpty()) {
@@ -44,7 +45,8 @@ public class SecurityFilter extends OncePerRequestFilter{
             //Injetando Auth no Spring Security | para todas as requisições o Spring ter as infos do usuário
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
-        
+        }
+            
         filterChain.doFilter(request, response);
     }
     
