@@ -19,6 +19,13 @@ import com.github.vitormozer9.management_system.modules.candidate.useCases.ListA
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ProfileCandidateUseCase;
 import com.github.vitormozer9.management_system.modules.company.entities.JobEntity;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -62,6 +69,15 @@ public class CandidateController {
 
     @GetMapping("/job")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidate", description = "candidate informations")
+    @Operation(summary = "List of vacancies available for the candidate" , description = "Vancancy list based on filters")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", content = {
+            @Content(
+                array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)
+            ))
+        })
+    })
     public List<JobEntity> listAllJobs(@RequestParam String filter){
         return this.allJobsByFilterUseCase.execute(filter);
     }

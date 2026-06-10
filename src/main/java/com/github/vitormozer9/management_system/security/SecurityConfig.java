@@ -35,7 +35,6 @@ public class SecurityConfig {
                     .requestMatchers("/company/auth").permitAll()
                     .requestMatchers("/candidate/auth").permitAll()
                     .requestMatchers(("/candidate/job")).permitAll()
-                    .requestMatchers(("/job")).permitAll()
                     .requestMatchers(SWAGGER_UI).permitAll();
                 auth.anyRequest().authenticated();  
 
