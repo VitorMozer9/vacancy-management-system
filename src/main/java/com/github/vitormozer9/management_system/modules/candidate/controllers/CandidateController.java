@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.vitormozer9.management_system.modules.candidate.CandidateEntity;
+import com.github.vitormozer9.management_system.modules.candidate.dto.ProfileCandidateResponseDTO;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.CreateCandidateUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -55,6 +56,15 @@ public class CandidateController {
 
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidate", description = "candidate informations")
+    @Operation(summary = "Candidate profile" , description = "This function is responsible for search candidate informations")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
+        }),
+        @ApiResponse(responseCode = "400", description = "User not found")
+    })
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
         var idCandidate = request.getAttribute("candidate_id");
