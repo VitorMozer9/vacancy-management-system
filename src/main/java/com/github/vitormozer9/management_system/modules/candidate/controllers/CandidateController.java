@@ -33,6 +33,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/candidate")
+@Tag(name = "Candidate", description = "candidate informations")
 public class CandidateController {
 
     @Autowired
@@ -45,6 +46,13 @@ public class CandidateController {
     private ListAllJobsByFilterUseCase allJobsByFilterUseCase;
 
     @PostMapping("/")
+    @Operation(summary = "Create a candidate", description = "This function is responsible for create a new candidate profile")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = CandidateEntity.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Candidate already exists!")
+    })
     public ResponseEntity<Object> createCandidates(@Valid @RequestBody CandidateEntity candidateEntity) {
         try {
             var result = this.candidateUserCase.execute(candidateEntity);
@@ -56,13 +64,12 @@ public class CandidateController {
 
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
-    @Tag(name = "Candidate", description = "candidate informations")
-    @Operation(summary = "Candidate profile" , description = "This function is responsible for search candidate informations")
+    @Operation(summary = "Candidate profile", description = "This function is responsible for search candidate informations")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", content = {
-            @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
-        }),
-        @ApiResponse(responseCode = "400", description = "User not found")
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "User not found")
     })
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
@@ -80,17 +87,14 @@ public class CandidateController {
 
     @GetMapping("/job")
     @PreAuthorize("hasRole('CANDIDATE')")
-    @Tag(name = "Candidate", description = "candidate informations")
-    @Operation(summary = "List of vacancies available for the candidate" , description = "Vancancy list based on filters")
+    @Operation(summary = "List of vacancies available for the candidate", description = "Vancancy list based on filters")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", content = {
-            @Content(
-                array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)
-            ))
-        })
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+            })
     })
     @SecurityRequirement(name = "jwt_auth")
-    public List<JobEntity> listAllJobs(@RequestParam String filter){
+    public List<JobEntity> listAllJobs(@RequestParam String filter) {
         return this.allJobsByFilterUseCase.execute(filter);
     }
 
