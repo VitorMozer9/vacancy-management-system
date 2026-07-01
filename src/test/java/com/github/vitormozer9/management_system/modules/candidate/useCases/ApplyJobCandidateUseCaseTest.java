@@ -7,8 +7,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import com.github.vitormozer9.management_system.exceptions.JobNotFoundException;
 import com.github.vitormozer9.management_system.exceptions.UserNotFoundException;
+import com.github.vitormozer9.management_system.modules.candidate.CandidateEntity;
 import com.github.vitormozer9.management_system.modules.candidate.CandidateRepository;
 import com.github.vitormozer9.management_system.modules.company.repositories.JobRepository;
 
@@ -33,5 +39,23 @@ public class ApplyJobCandidateUseCaseTest {
         } catch (Exception e) {
             assertThat(e).isInstanceOf(UserNotFoundException.class);
         }
+    }
+
+    @Test
+    public void should_not_be_able_to_apply_job_with_job_not_found() {
+        var idCandidate = UUID.randomUUID();
+
+        var candidate = new CandidateEntity();
+        candidate.setId(idCandidate);
+
+        when(candidateRepository.findById(idCandidate)).thenReturn(Optional.of(candidate));
+
+        try {
+            applyJobCandidateUseCase.execute(idCandidate, null);
+
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(JobNotFoundException.class);
+        }
+
     }
 }
