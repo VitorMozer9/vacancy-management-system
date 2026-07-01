@@ -14,8 +14,8 @@ import java.util.UUID;
 
 import com.github.vitormozer9.management_system.exceptions.JobNotFoundException;
 import com.github.vitormozer9.management_system.exceptions.UserNotFoundException;
-import com.github.vitormozer9.management_system.modules.candidate.CandidateEntity;
 import com.github.vitormozer9.management_system.modules.candidate.CandidateRepository;
+import com.github.vitormozer9.management_system.modules.candidate.entities.CandidateEntity;
 import com.github.vitormozer9.management_system.modules.company.repositories.JobRepository;
 
 @ExtendWith(MockitoExtension.class)

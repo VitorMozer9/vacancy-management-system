@@ -1,4 +1,4 @@
-package com.github.vitormozer9.management_system.modules.candidate;
+package com.github.vitormozer9.management_system.modules.candidate.entities;
 
 import java.util.UUID;
 

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.vitormozer9.management_system.modules.candidate.CandidateEntity;
 import com.github.vitormozer9.management_system.modules.candidate.dto.ProfileCandidateResponseDTO;
+import com.github.vitormozer9.management_system.modules.candidate.entities.CandidateEntity;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.CreateCandidateUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ProfileCandidateUseCase;
