@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.vitormozer9.management_system.modules.candidate.dto.ProfileCandidateResponseDTO;
 import com.github.vitormozer9.management_system.modules.candidate.entities.CandidateEntity;
+import com.github.vitormozer9.management_system.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.CreateCandidateUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import com.github.vitormozer9.management_system.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -44,6 +45,9 @@ public class CandidateController {
 
     @Autowired
     private ListAllJobsByFilterUseCase allJobsByFilterUseCase;
+
+    @Autowired
+    private ApplyJobCandidateUseCase applyJobCandidateUseCase;
 
     @PostMapping("/")
     @Operation(summary = "Create a candidate", description = "This function is responsible for create a new candidate profile")
@@ -96,6 +100,24 @@ public class CandidateController {
     @SecurityRequirement(name = "jwt_auth")
     public List<JobEntity> listAllJobs(@RequestParam String filter) {
         return this.allJobsByFilterUseCase.execute(filter);
+    }
+
+    @PostMapping("/job/apply")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @Operation(summary = "Register a candidate to a vancancy", description = "This function is response to a register a candidate to a open vancancy")
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID idJob) {
+
+        var idCandidate = request.getAttribute("candidate_id");
+
+        try {
+            var result = this.applyJobCandidateUseCase.execute(UUID.fromString(idCandidate.toString()), idJob);
+            return ResponseEntity.ok().body(result);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
 }
