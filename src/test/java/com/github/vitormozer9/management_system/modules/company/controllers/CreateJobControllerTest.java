@@ -1,5 +1,6 @@
 package com.github.vitormozer9.management_system.modules.company.controllers;
 
+
 import java.util.UUID;
 
 import org.junit.Before;
@@ -66,7 +67,21 @@ public class CreateJobControllerTest {
                 .header("Authorization", TestUtils.generateToken(company.getId())))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        System.out.println(result);
+    }
+
+    @Test
+    public void should_not_be_able_to_create_aNewJob_if_company_not_found() throws Exception {
+        var createJobDTO = CreateJobDTO.builder()
+                .benefits("BENEFITS TEST")
+                .description("DESCRIPTION_TEST")
+                .level("LEVEL_TEST")
+                .build();
+
+        mvc.perform(MockMvcRequestBuilders.post("/company/job/")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtils.objectToJSON(createJobDTO))
+            .header("Authorization", TestUtils.generateToken(UUID.randomUUID())))
+            .andExpect(MockMvcResultMatchers.status().is(400));
     }
 
 }
