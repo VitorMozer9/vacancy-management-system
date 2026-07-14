@@ -3,9 +3,9 @@ package com.github.vitormozer9.management_system.modules.candidate.useCases;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.github.vitormozer9.management_system.exceptions.UserNotFoundException;
 import com.github.vitormozer9.management_system.modules.candidate.CandidateRepository;
 import com.github.vitormozer9.management_system.modules.candidate.dto.ProfileCandidateResponseDTO;
 
@@ -18,7 +18,7 @@ public class ProfileCandidateUseCase {
     public ProfileCandidateResponseDTO execute(UUID idCandidate) {
         var candidate = this.candidateRepository.findById(idCandidate)
                 .orElseThrow(() -> {
-                    throw new UsernameNotFoundException("User not found");
+                    throw new UserNotFoundException();
                 });
         var candidateDTO = ProfileCandidateResponseDTO.builder()
                 .description(candidate.getDescription())
