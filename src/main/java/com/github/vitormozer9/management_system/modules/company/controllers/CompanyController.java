@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
-
+ 
     @Autowired
     private CreateCompanyUseCase companyUseCase;
 
@@ -24,7 +24,6 @@ public class CompanyController {
         try {
             var result = this.companyUseCase.execute(companyEntity);
             return ResponseEntity.ok().body(result);
-
         } 
         catch (Exception e) 
         {
